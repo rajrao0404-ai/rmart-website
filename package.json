@@ -1,0 +1,10 @@
+{
+  "name": "r-mart-pages",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler pages deploy . --project-name r-mart"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

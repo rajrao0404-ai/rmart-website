@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "products": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'mdUwUKQDObeGjh0JrVe6BETYEMy1'"
+    },
+    "orders": {
+      ".indexOn": [
+        "assignedDeliveryBoyEmail"
+      ],
+      ".read": "(auth != null && auth.uid === 'mdUwUKQDObeGjh0JrVe6BETYEMy1') || (auth != null && auth.token.email != null && query.orderByChild == 'assignedDeliveryBoyEmail' && query.equalTo == auth.token.email)",
+      "$orderId": {
+        ".write": "(!data.exists() && newData.exists()) || (auth != null && auth.uid === 'mdUwUKQDObeGjh0JrVe6BETYEMy1')",
+        "status": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && (newData.val() == 'Picked Up' || newData.val() == 'Out for Delivery' || newData.val() == 'Delivered' || newData.val() == 'Cancelled')",
+          ".validate": "newData.isString() && (newData.val() == 'Pending' || newData.val() == 'Confirmed' || newData.val() == 'Preparing' || newData.val() == 'Picked Up' || newData.val() == 'Out for Delivery' || newData.val() == 'Delivered' || newData.val() == 'Cancelled')"
+        },
+        "statusUpdatedAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val()"
+        },
+        "deliveryStartedAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val()"
+        },
+        "pickedUpAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val()"
+        },
+        "deliveredAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val()"
+        },
+        "cancellationReason": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && newData.parent().child('status').val() == 'Cancelled'",
+          ".validate": "newData.isString() && (newData.val() == 'Customer does not want' || newData.val() == 'Customer not available' || newData.val() == 'Payment issue')"
+        },
+        "cancelledAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && newData.parent().child('status').val() == 'Cancelled'"
+        },
+        "cancelledBy": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && newData.parent().child('status').val() == 'Cancelled'",
+          ".validate": "newData.isString()"
+        },
+        "paymentStatus": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && data.parent().child('paymentMethod').val() == 'COD'",
+          ".validate": "newData.isString() && (newData.val() == 'Paid' || newData.val() == 'Unpaid')"
+        },
+        "paymentCollectedAt": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && data.parent().child('paymentMethod').val() == 'COD'"
+        },
+        "paymentCollectedBy": {
+          ".write": "auth != null && auth.token.email != null && auth.token.email == data.parent().child('assignedDeliveryBoyEmail').val() && data.parent().child('paymentMethod').val() == 'COD'"
+        }
+      }
+    },
+    "productCosts": {
+      ".read": "auth != null && auth.uid === 'mdUwUKQDObeGjh0JrVe6BETYEMy1'",
+      ".write": "auth != null && auth.uid === 'mdUwUKQDObeGjh0JrVe6BETYEMy1'"
+    }
+  }
+}
